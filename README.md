@@ -1,2 +1,2 @@
 # nodeauth
-Example of Auth Back-End using NodeJS
+Example of authentication API for NodeJS
