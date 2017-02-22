@@ -1,17 +1,24 @@
-# Node Auth API
-Example of authentication API for NodeJS
+# Blog App - NodeJS
+- NodeJs@6.9.5
+- MongoDB@ˆ
 
 ## How to run
 
 First:
 ```
-npm install
+$ npm install
 ```
 
 Then:
 
 ```
-npm start
+$ npm start
+```
+or (recommended):
+
+```
+$ npm install -g nodemon
+$ nodemon
 ```
 
 ;)
