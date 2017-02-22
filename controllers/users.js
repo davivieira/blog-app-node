@@ -6,6 +6,17 @@ const Auth = require('../config/auth');
 
 const UserController = express.Router();
 
+/**
+ * Creates a new user.
+ *
+ * @example expected request body.
+ * {
+ *  "name": "Davi Vieira",
+ *  "email": "email@provider.com",
+ *  "username": "user",
+ *  "password": "123456"
+ * }
+ */
 UserController.post('/register', (req, res, next) => {
   let newUser = {
     name: req.body.name,
@@ -21,6 +32,15 @@ UserController.post('/register', (req, res, next) => {
   });
 });
 
+/**
+ * Try to authenticate bases on user and password
+ *
+ * @example expected request body.
+ * {
+ *  "username": "user",
+ *  "password": "123456"
+ * }
+ */
 UserController.put('/authenticate', (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
