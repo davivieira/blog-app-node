@@ -5,13 +5,13 @@ class UserModel {
 
   constructor() {}
 
-  registerUser(newUser, callback) {
+  registerUser(newUser) {
     return new Promise((resolve, reject) => {
       bcrypt.genSalt(10, (err, salt) => {
 
         let user = new User(newUser);
         bcrypt.hash(user.password, salt, (err, hash) => {
-          if (err) reject(err);
+          if (err || !hash) reject(err);
 
           user.password = hash;
           user.save((err, user) => {
@@ -29,24 +29,29 @@ class UserModel {
       const query = {username: username};
 
       User.findOne(query, (err, user) => {
-        if (err) reject(err);
+        if (err || !user) reject(err);
         resolve(user);
       });
     });
 
   }
 
-  checkPassword(givenPassword, hash, callback) {
+  checkPassword(givenPassword, hash) {
     return new Promise((resolve, reject) => {
       bcrypt.compare(givenPassword, hash, (err, isMatch) => {
-        if (err) reject(err);
+        if (err || !isMatch) reject(err);
         resolve();
       });
     });
   }
 
-  getById(user, callback) {
-    User.findOne({_id: user.id}, callback);
+  getById(user) {
+    return new Promise((resolve, reject) => {
+      User.findOne({_id: user.id}, (err, user) => {
+        if (err || !user) reject(err);
+        resolve(user);
+      });
+    });
   }
 }
 
