@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const passport = require('passport');
 const Auth = require('./auth');
+const logger = require('morgan');
 
 /**
  * Main app configuration. All configurations should be initialized by init() method,
@@ -24,7 +25,7 @@ const AppConfig = (() => {
     mongoose.connection.on('error', (err) => {
       console.log("Something went wrong: " + err);
     });
-  }
+  };
 
   /**
    * Loads all controllers. Every new controller should be registered here.
@@ -32,11 +33,19 @@ const AppConfig = (() => {
   const loadControllers = (app) => {
     const users = require('../controllers/users');
     app.use('/users', users);
-  }
+  };
+
+  /**
+   * Starts middleware logging
+   */
+   const configLogging = (app) => {
+     app.use(logger('[:date[iso]] Request: :url | Method: :method | Status: :status | :response-time ms'));
+   };
 
   return {
     init: (app) => {
       connectToMongoDB();
+      configLogging(app);
 
       // Passport middleware
       Auth.defineAuthStrategy(passport);

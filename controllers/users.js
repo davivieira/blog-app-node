@@ -17,7 +17,7 @@ const UserController = express.Router();
  *  "password": "123456"
  * }
  */
-UserController.post('/register', (req, res, next) => {
+UserController.post('/register', (req, res) => {
   let newUser = {
     name: req.body.name,
     email: req.body.email,
@@ -27,13 +27,13 @@ UserController.post('/register', (req, res, next) => {
 
   UserModel.registerUser(newUser).then((user) => {
     res.json({success: true, msg: `User ${user.name} saved successfully!`})
-  }).catch((err) => {
+  }).catch(() => {
     res.json({success: false, msg: 'Failed to register user'})
   });
 });
 
 /**
- * Try to authenticate bases on user and password
+ * Try to authenticate based on username and password provided.
  *
  * @example expected request body.
  * {
@@ -41,13 +41,10 @@ UserController.post('/register', (req, res, next) => {
  *  "password": "123456"
  * }
  */
-UserController.put('/authenticate', (req, res, next) => {
-  const username = req.body.username;
-  const password = req.body.password;
+UserController.put('/authenticate', (req, res) => {
+  const [username, password] = [req.body.username, req.body.password];
 
   UserModel.getByUsername(username).then((user) => {
-    if (!user) res.json({success: false, msg: 'User not found'});
-
     UserModel.checkPassword(password, user.password).then(() => {
       const token = jwt.sign(user, Auth.appSecuritySecret, {
         expiresIn: 36000
@@ -64,18 +61,22 @@ UserController.put('/authenticate', (req, res, next) => {
         }
       });
     }).catch((err) => {
-      throw err;
+      if (err) {
+        res.json({success: false, msg: err});
+      } else {
+        res.json({success: false, msg: 'Wrong password!'});
+      }
     });
   }).catch((err) => {
-    throw err;
+      if (err) {
+        res.json({success: false, msg: err});
+      } else {
+        res.json({success: false, msg: 'User not found'});
+      }
   });
 });
 
 UserController.get('/profile', passport.authenticate('jwt', {session: false}), (req, res) => {
-  res.json(req.user);
-});
-
-UserController.get('/validate', (req, res) => {
   res.json(req.user);
 });
 

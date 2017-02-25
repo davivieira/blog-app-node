@@ -15,16 +15,10 @@ const Auth = {
       }
 
       passport.use(new JwtStrategy(opts, (payload, done) => {
-        UserModel.getById({"id": payload._doc._id}, (err, user) => {
-            if (err) {
-                return done(err, false);
-            }
-
-            if (user) {
-                done(null, user);
-            } else {
-                done(null, false);
-            }
+        UserModel.getById({"id": payload._doc._id}).then((user) => {
+          done(null, user);
+        }).catch((err) => {
+          done(err, false);
         });
       }));
     }
