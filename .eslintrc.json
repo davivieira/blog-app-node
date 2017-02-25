@@ -1,0 +1,27 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "rules": {
+    "semi": 1,
+    "no-var": 1,
+    "camelcase": 1,
+    "global-require": 1,
+    "no-class-assign": 1,
+    "no-const-assign": 2,
+    "no-dupe-class-members": 2,
+    "no-new-symbol": 2,
+    "no-case-declarations": 1,
+    "no-empty-pattern": 2,
+    "no-self-assign": 1,
+    "no-useless-return": 1,
+    "no-delete-var": 2,
+    "no-unused-vars": 1,
+    "no-redeclare": 1,
+    "vars-on-top": 1
+  }
+}

@@ -1,4 +1,6 @@
-const [express, config] = [require('express'), require('./config/config')];
+const express = require('express');
+const config = require('./config/config');
+
 const [app, PORT] = [express(), 3000];
 
 //Init configurations defined in ./config/config.js

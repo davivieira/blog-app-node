@@ -7,19 +7,16 @@ class UserModel {
 
   registerUser(newUser) {
     return new Promise((resolve, reject) => {
-      bcrypt.genSalt(10, (err, salt) => {
+      if (!newUser.password) {
+        reject();
+      }
+      let user = new User(newUser);
+      user.password = UserModel._encryptPassword(user.password);
 
-        let user = new User(newUser);
-        bcrypt.hash(user.password, salt, (err, hash) => {
-          if (err || !hash) reject(err);
+      user.save((err, user) => {
+        if (err) reject(err);
 
-          user.password = hash;
-          user.save((err, user) => {
-            if (err) reject(err);
-
-            resolve(user);
-          });
-        });
+        resolve(user);
       });
     });
   }
@@ -52,6 +49,10 @@ class UserModel {
         resolve(user);
       });
     });
+  }
+
+  _encryptPassword(password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
   }
 }
 

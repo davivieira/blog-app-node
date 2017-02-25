@@ -26,9 +26,9 @@ UserController.post('/register', (req, res) => {
   };
 
   UserModel.registerUser(newUser).then((user) => {
-    res.json({success: true, msg: `User ${user.name} saved successfully!`})
+    res.json({success: true, msg: `User ${user.name} saved successfully!`});
   }).catch(() => {
-    res.json({success: false, msg: 'Failed to register user'})
+    res.json({success: false, msg: 'Failed to register user'});
   });
 });
 
@@ -68,11 +68,11 @@ UserController.put('/authenticate', (req, res) => {
       }
     });
   }).catch((err) => {
-      if (err) {
-        res.json({success: false, msg: err});
-      } else {
-        res.json({success: false, msg: 'User not found'});
-      }
+    if (err) {
+      res.json({success: false, msg: err});
+    } else {
+      res.json({success: false, msg: 'User not found'});
+    }
   });
 });
 
