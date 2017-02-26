@@ -4,21 +4,29 @@
 
 ## How to run
 
-First:
+1. Install dependencies:
 ```
 $ npm install
 ```
 
-Then:
+2. Set `NODE_ENV` in environment variables (unix):
+```
+$ export NODE_ENV=dev
+```
 
+3. Running:
 ```
 $ npm start
 ```
-or (recommended):
 
+or (recommended):
 ```
 $ npm install -g nodemon
 $ nodemon
 ```
 
+You can use gulp to run tests + lint:
+```
+$ gulp
+```
 ;)

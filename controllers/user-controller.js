@@ -2,7 +2,9 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const UserModel = require('../models/user-model');
-const Auth = require('../config/auth');
+const Auth = require('../config/scripts/auth-conf');
+const ResponseGenerator = require('../utils/response-generator');
+const error = require('../constants/error');
 
 const UserController = express.Router();
 
@@ -26,9 +28,9 @@ UserController.post('/register', (req, res) => {
   };
 
   UserModel.registerUser(newUser).then((user) => {
-    res.json({success: true, msg: `User ${user.name} saved successfully!`});
+    ResponseGenerator.createSuccessMessage(user, res);
   }).catch(() => {
-    res.json({success: false, msg: 'Failed to register user'});
+    ResponseGenerator.createErrorMessage(error.http.INTERNAL_SERVER_ERROR, error.custom.FAILED_TO_REGISTER_USER, res);
   });
 });
 
@@ -42,7 +44,8 @@ UserController.post('/register', (req, res) => {
  * }
  */
 UserController.put('/authenticate', (req, res) => {
-  const [username, password] = [req.body.username, req.body.password];
+  const username = req.body.username;
+  const password = req.body.password;
 
   UserModel.getByUsername(username).then((user) => {
     UserModel.checkPassword(password, user.password).then(() => {
@@ -50,7 +53,7 @@ UserController.put('/authenticate', (req, res) => {
         expiresIn: 36000
       });
 
-      res.json({
+      ResponseGenerator.createSuccessMessage({
         success: true,
         token: `JWT ${token}`,
         user: {
@@ -59,25 +62,28 @@ UserController.put('/authenticate', (req, res) => {
           email: user.email,
           username: user.username
         }
-      });
+      }, res);
     }).catch((err) => {
       if (err) {
-        res.json({success: false, msg: err});
+        ResponseGenerator.createErrorMessage(error.http.INTERNAL_SERVER_ERROR, error.custom.AUTHENTICATION_FAILED, res);
       } else {
-        res.json({success: false, msg: 'Wrong password!'});
+        ResponseGenerator.createErrorMessage(error.http.INTERNAL_SERVER_ERROR, error.custom.WRONG_PASSWORD, res);
       }
     });
   }).catch((err) => {
     if (err) {
-      res.json({success: false, msg: err});
+      ResponseGenerator.createErrorMessage(error.http.INTERNAL_SERVER_ERROR, error.custom.AUTHENTICATION_FAILED, res);
     } else {
-      res.json({success: false, msg: 'User not found'});
+      ResponseGenerator.createErrorMessage(error.http.INTERNAL_SERVER_ERROR, error.custom.USER_NOT_FOUND, res);
     }
   });
 });
 
+/**
+ * Returns current's user data.
+ */
 UserController.get('/profile', passport.authenticate('jwt', {session: false}), (req, res) => {
-  res.json(req.user);
+  ResponseGenerator.createSuccessMessage(req.user, res);
 });
 
 module.exports = UserController;

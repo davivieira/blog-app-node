@@ -11,7 +11,7 @@ class UserModel {
         reject();
       }
       let user = new User(newUser);
-      user.password = UserModel._encryptPassword(user.password);
+      user.password = this._encryptPassword(user.password);
 
       user.save((err, user) => {
         if (err) reject(err);
