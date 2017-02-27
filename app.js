@@ -1,9 +1,9 @@
 const express = require('express');
-const config = require('./config/config');
+const config = require('./config/scripts/main-conf');
 
 const [app, PORT] = [express(), 3000];
 
-//Init configurations defined in ./config/config.js
+//Init configurations defined in ./config/main-conf.js
 config.init(app);
 
 app.get('/', (req, res) => {

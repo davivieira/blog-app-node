@@ -1,0 +1,7 @@
+{
+  "mongodb": {
+    "database": "meanauth",
+    "host": "mongodb://localhost",
+    "port": 27017
+  }
+}

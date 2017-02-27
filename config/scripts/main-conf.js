@@ -1,31 +1,17 @@
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const passport = require('passport');
-const Auth = require('./auth');
+const Auth = require('./auth-conf');
+const NconfConf = require('./nconf-conf');
 const logger = require('morgan');
-const mongoose = require('mongoose');
-const users = require('../controllers/user-controller');
+const MongoConf = require('./mongo-conf');
+const users = require('../../controllers/user-controller');
 
 /**
  * Main app configuration. All configurations should be initialized by init() method,
  * returned from IIFE AppConfig.
  */
 const AppConfig = (() => {
-
-  /**
-   * Starts mongo configuration.
-   */
-  const connectToMongoDB = () => {
-    mongoose.connect('mongodb://localhost:27017/meanauth');
-
-    mongoose.connection.on('connected', () => {
-      console.log("Connected to mongodb");
-    });
-
-    mongoose.connection.on('error', (err) => {
-      console.log("Something went wrong: " + err);
-    });
-  };
 
   /**
    * Loads all controllers. Every new controller should be registered here.
@@ -43,7 +29,8 @@ const AppConfig = (() => {
 
   return {
     init: (app) => {
-      connectToMongoDB();
+      NconfConf.init();
+      MongoConf.init();
       configLogging(app);
 
       // Passport middleware
