@@ -1,6 +1,6 @@
 class ResponseGenerator {
 
-  constructor() {};
+  constructor() {}
 
   createErrorMessage(httpCode, msgCode, res) {
     res.status(httpCode).json({
@@ -13,4 +13,4 @@ class ResponseGenerator {
   }
 }
 
-module.exports = new ResponseGenerator;
+module.exports = new ResponseGenerator();
