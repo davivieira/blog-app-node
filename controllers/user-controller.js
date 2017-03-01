@@ -44,8 +44,7 @@ UserController.post('/register', (req, res) => {
  * }
  */
 UserController.put('/authenticate', (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
+  const {username, password} = req.body;
 
   UserModel.getByUsername(username).then((user) => {
     UserModel.checkPassword(password, user.password).then(() => {
