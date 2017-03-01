@@ -19,14 +19,8 @@ $ export NODE_ENV=dev
 $ npm start
 ```
 
-or (recommended):
+or (recommended), you can use gulp to run tests + lint + start the app:
 ```
-$ npm install -g nodemon
-$ nodemon
-```
-
-You can use gulp to run tests + lint:
-```
-$ gulp
+$ gulp watch
 ```
 ;)
