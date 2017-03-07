@@ -2,9 +2,11 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const UserModel = require('../models/user-model');
+const AuditModel = require('../models/audit-model');
 const Auth = require('../config/scripts/auth-conf');
 const ResponseGenerator = require('../utils/response-generator');
 const error = require('../constants/error');
+const eventTypes = require('../constants/event-types');
 
 const UserController = express.Router();
 
@@ -51,6 +53,12 @@ UserController.put('/authenticate', (req, res) => {
       const token = jwt.sign(user, Auth.appSecuritySecret, {
         expiresIn: 36000
       });
+      const event = {
+        username: user.name,
+        eventTime: new Date(),
+        eventType: eventTypes.LOGIN_EVENT
+      };
+      AuditModel.logEvent(event);
 
       ResponseGenerator.createSuccessMessage({
         success: true,
