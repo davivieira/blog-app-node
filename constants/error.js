@@ -1,5 +1,5 @@
 /*
- * Erro messages/codes.
+ * Error messages/codes.
  */
 module.exports = {
   http: {
