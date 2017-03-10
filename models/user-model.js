@@ -1,5 +1,7 @@
 const bcrypt = require('bcryptjs');
 const User = require('../schemas/user');
+const AuditModel = require('../models/audit-model');
+const eventTypes = require('../constants/event-types');
 
 class UserModel {
 
@@ -27,6 +29,13 @@ class UserModel {
 
       User.findOne(query, (err, user) => {
         if (err || !user) reject(err);
+        const event = {
+          username: user.username,
+          eventTime: new Date(),
+          eventType: eventTypes.LOGIN_EVENT
+        };
+        AuditModel.logEvent(event);
+
         resolve(user);
       });
     });

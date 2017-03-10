@@ -2,18 +2,13 @@ const Audit = require('../schemas/audit');
 
 class AuditModel {
 
-  constructor() {
-  }
+  constructor() {}
 
   logEvent(newEvent) {
-    return new Promise((resolve, reject) => {
-      let event = new Audit(newEvent);
+    let event = new Audit(newEvent);
 
-      event.save((err, event) => {
-        if (err) reject(err);
-
-        resolve(event);
-      });
+    event.save((err) => {
+      if (err) console.log(err);
     });
   }
 }
