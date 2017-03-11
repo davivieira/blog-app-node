@@ -2,7 +2,7 @@ const expect = require('chai').expect;
 const UserModel = require('../../models/user-model');
 const User = require('../../schemas/user');
 
-describe('Register', () => {
+describe('UNIT test: UserModel', () => {
   it('Should encrypt user\'s password.', () => {
     const user = new User({
       name: 'Test',
