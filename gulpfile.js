@@ -3,8 +3,12 @@ const mocha = require('gulp-mocha');
 const linter = require('gulp-eslint');
 const shell = require('gulp-shell');
 
+gulp.task('test', () => {
+  gulp.src('./test/**/*.js')
+      .pipe(mocha());
+});
 
-gulp.task('lint', () => {
+gulp.task('lint', ['test'], () => {
   return gulp.src(['**/*.js', '!node_modules/**'])
       .pipe(linter('.eslintrc'))
       .pipe(linter.format())
@@ -14,12 +18,7 @@ gulp.task('lint', () => {
       });
 });
 
-gulp.task('test', ['lint'], () => {
-  gulp.src('./test/**/*.js')
-      .pipe(mocha());
-});
-
-gulp.task('start', ['test'], shell.task([
+gulp.task('start', ['lint'], shell.task([
   'npm start',
 ]));
 

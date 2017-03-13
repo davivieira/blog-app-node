@@ -6,6 +6,7 @@ const NconfConf = require('./nconf-conf');
 const logger = require('morgan');
 const MongoConf = require('./mongo-conf');
 const users = require('../../controllers/user-controller');
+const nconf = require('nconf');
 
 /**
  * Main app configuration. All configurations should be initialized by init() method,
@@ -24,7 +25,8 @@ const AppConfig = (() => {
    * Starts middleware logging
    */
   const configLogging = (app) => {
-    app.use(logger('[:date[iso]] Request: :url | Method: :method | Status: :status | :response-time ms'));
+    if (nconf.get('logRequests'))
+      app.use(logger('[:date[iso]] Request: :url | Method: :method | Status: :status | :response-time ms'));
   };
 
   return {

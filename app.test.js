@@ -6,10 +6,7 @@ const [app, PORT] = [express(), process.env.PORT || 3000];
 //Init configurations defined in ./config/main-conf.js
 config.init(app);
 
-app.get('/', (req, res) => {
-  res.json("It worked!");
-});
+app.listen(PORT);
 
-app.listen(PORT, () => {
-  console.log(`Listening to port ${PORT}`);
-});
+module.exports = app;
+

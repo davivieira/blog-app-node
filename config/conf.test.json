@@ -1,8 +1,8 @@
 {
   "mongodb": {
-    "database": "meanauth",
+    "database": "test",
     "host": "mongodb://localhost",
     "port": 27017
   },
-  "logRequests": true
+  "logRequests": false
 }
