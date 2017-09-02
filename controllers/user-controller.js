@@ -85,4 +85,16 @@ UserController.get('/profile', passport.authenticate('jwt', {session: false}), (
   ResponseGenerator.createSuccessMessage(req.user, res);
 });
 
+UserController.put('/username', (req, res) => {
+  UserModel.getByUsername(req.body.username).then((user) => {
+      if (user) {
+        ResponseGenerator.createSuccessMessage({isAvailable: false}, res);
+      } else {
+        ResponseGenerator.createSuccessMessage({isAvailable: true}, res);
+      }
+  }).catch(() => {
+      ResponseGenerator.createErrorMessage(error.http.INTERNAL_SERVER_ERROR, error.custom.USER_NOT_FOUND, res);
+  });
+});
+
 module.exports = UserController;
