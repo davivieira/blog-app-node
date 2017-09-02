@@ -28,15 +28,20 @@ class UserModel {
       const query = {username: username};
 
       User.findOne(query, (err, user) => {
-        if (err || !user) reject(err);
-        const event = {
-          username: user.username,
-          eventTime: new Date(),
-          eventType: eventTypes.LOGIN_EVENT
-        };
-        AuditModel.logEvent(event);
+        if (err) reject(err);
 
-        resolve(user);
+        if (!user) {
+          resolve(null);
+        } else {
+            const event = {
+                username: user.username,
+                eventTime: new Date(),
+                eventType: eventTypes.LOGIN_EVENT
+            };
+            AuditModel.logEvent(event);
+
+            resolve(user);
+        }
       });
     });
 
